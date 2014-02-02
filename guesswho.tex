@@ -1,0 +1,152 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[absolute]{textpos}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{calc}
+
+\usepackage[textwidth=21.5cm, textheight=24cm]{geometry}
+\usepackage{times}
+\usepackage{datatool}
+\usepackage{ifthen}
+
+\newlength\HugePersoImageWidth
+\newlength\HugePersoImageHeight
+\newlength\HugePersoTextWidth
+\newlength\HugePersoTextHeight
+
+\newlength\SmallPersoImageWidth
+\newlength\SmallPersoImageHeight
+\newlength\SmallPersoTextWidth
+\newlength\SmallPersoTextHeight
+
+\setlength{\HugePersoImageWidth}{3cm}
+\setlength{\HugePersoImageHeight}{2.5cm}
+\setlength{\HugePersoTextWidth}{\HugePersoImageWidth}
+\setlength{\HugePersoTextHeight}{1.2cm}
+
+\setlength{\SmallPersoImageWidth}{1.5cm}
+\setlength{\SmallPersoImageHeight}{1.4cm}
+\setlength{\SmallPersoTextWidth}{\SmallPersoImageWidth}
+\setlength{\SmallPersoTextHeight}{0.4cm}
+
+
+
+% Display a huge perso
+% arg1 x position on grid
+% arg2 y position on grid
+% arg3 file name
+% arg4 perso name
+\newcommand\hugeperso[4]{
+\setlength{\TPHorizModule}{\HugePersoTextWidth + 0.4cm}
+\setlength{\TPVertModule}{4.5cm}
+
+\textblockorigin{1cm}{7cm}
+\setlength{\parindent}{0pt}
+
+
+\begin{textblock}{3}(#1,#2)
+
+  \begin{adjustbox}{
+    minipage=[c][\HugePersoImageHeight][c]{\HugePersoImageWidth}}
+    \centering
+    \includegraphics[max width=\HugePersoImageWidth, max
+    height=\HugePersoImageHeight]{#3}
+  \end{adjustbox}
+
+  \begin{adjustbox}{frame,
+    minipage=[c][\HugePersoTextHeight][c]{\HugePersoTextWidth}}
+    \begin{center}
+
+      \MakeUppercase{
+      \textbf{#4}
+      }
+    \end{center}
+  \end{adjustbox}
+
+
+\end{textblock}
+}
+
+
+
+
+
+
+\newcommand\smallperso[4]{
+\setlength{\TPHorizModule}{\SmallPersoTextWidth + 1mm}
+\setlength{\TPVertModule}{2cm}
+
+\textblockorigin{2.1cm}{1.5cm}
+\setlength{\parindent}{0pt}
+
+
+\begin{textblock}{3}(#1,#2)
+
+  \begin{adjustbox}{
+    minipage=[c][\SmallPersoImageHeight][c]{\SmallPersoImageWidth}}
+    \centering
+    \includegraphics[max width=\SmallPersoImageWidth, max
+    height=\SmallPersoImageHeight]{#3}
+  \end{adjustbox}\\
+  \begin{adjustbox}{frame,
+    minipage=[c][\SmallPersoTextHeight][c]{\SmallPersoTextWidth}}
+    \begin{center}
+
+      \tiny
+      \MakeUppercase{
+      \textbf{#4}
+      }
+    \end{center}
+  \end{adjustbox}
+
+
+\end{textblock}
+}
+
+
+% Prepare the dataset
+\DTLsetseparator{;}
+\DTLloaddb[noheader,keys={fname,name}]{data_a}{file_list_a.csv}
+\DTLloaddb[noheader,keys={fname,name}]{data_b}{file_list_b.csv}
+
+\begin{document}
+
+\newcounter{smallX}
+\newcounter{smallY}
+\setcounter{smallX}{0}
+\setcounter{smallY}{0}
+\DTLforeach{data_a}{\fname=fname,\name=name}{
+	\smallperso{\value{smallX}}{\value{smallY}}{\fname}{\name}
+	\ifthenelse{\equal{\value{smallX}}{11}}
+	{
+		\setcounter{smallX}{0}
+		\stepcounter{smallY}
+	}
+	{
+		\stepcounter{smallX}
+	}
+}
+
+
+\newcounter{hugeX}
+\newcounter{hugeY}
+\setcounter{hugeX}{0}
+\setcounter{hugeY}{0}
+\DTLforeach{data_b}{\fname=fname,\name=name}{
+	\hugeperso{\value{hugeX}}{\value{hugeY}}{\fname}{\name}
+	\ifthenelse{\equal{\value{hugeX}}{5}}
+	{
+		\setcounter{hugeX}{0}
+		\stepcounter{hugeY}
+	}
+	{
+		\stepcounter{hugeX}
+	}
+}
+
+
+
+
+\end{document}

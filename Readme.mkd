@@ -1,0 +1,33 @@
+GUESS WHO SHEET GENERATOR
+=========================
+
+Aim
+---
+Generator of shee for the game `guess who` (in the version where the two boards are positionned vertically).
+If you think the 'official' sheets (http://www.hasbro.com/games/discover/guesswho/Guess-Who-Characters-fr_CA.cfm) are not interesting 
+and if you prefer to build your own, this project if for you.
+
+Manual
+------
+You need to put your 24 png files in the directory `data` and type `make` to build everything.
+
+Pre-requisites
+--------------
+ - GNU make if you want to automatize everything
+ - Latex to build the PDF document
+
+
+TODO
+----
+ - Add marker to fold the page
+ - SLightly tune the dimensions
+
+Licence
+-------
+
+GPL licence is used
+
+Example images has been stolen here:
+ 
+  * http://www.simpsoncrazy.com/
+
